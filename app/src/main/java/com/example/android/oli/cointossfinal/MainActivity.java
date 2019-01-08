@@ -1,6 +1,7 @@
 package com.example.android.oli.cointossfinal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         r = new Random();
         coinImage = (ImageView) findViewById(R.id.coin);
         headsButton = (Button) findViewById(R.id.heads);
@@ -65,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
         Rotate3dAnimation animation;
 
-        if (curSide == R.drawable.heads) {
-            animation = new Rotate3dAnimation(coinImage, R.drawable.heads, R.drawable.tails, 0, 180, 0, 0, 0, 0);
+        if (curSide == R.drawable.coinhead) {
+            animation = new Rotate3dAnimation(coinImage, R.drawable.coinhead, R.drawable.cointail, 0, 180, 0, 0, 0, 0);
 
         } else {
-            animation = new Rotate3dAnimation(coinImage, R.drawable.tails, R.drawable.heads, 0, 180, 0, 0, 0, 0);
+            animation = new Rotate3dAnimation(coinImage, R.drawable.cointail, R.drawable.coinhead, 0, 180, 0, 0, 0, 0);
         }
         if (stayTheSame) {
             animation.setRepeatCount(9); // must be odd (5+1 = 6 flips so the side will stay the same)
@@ -102,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (coinSide == 0) {  // We have Tails
 
-            boolean stayTheSame = (curSide == R.drawable.tails);
+            boolean stayTheSame = (curSide == R.drawable.cointail);
             long timeOfAnimation = animateCoin(stayTheSame);
-            curSide = R.drawable.tails;
+            curSide = R.drawable.cointail;
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -122,9 +124,9 @@ public class MainActivity extends AppCompatActivity {
 
         } else {  // We have Heads
 
-            boolean stayTheSame = (curSide == R.drawable.heads);
+            boolean stayTheSame = (curSide == R.drawable.coinhead);
             long timeOfAnimation = animateCoin(stayTheSame);
-            curSide = R.drawable.heads;
+            curSide = R.drawable.coinhead;
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
