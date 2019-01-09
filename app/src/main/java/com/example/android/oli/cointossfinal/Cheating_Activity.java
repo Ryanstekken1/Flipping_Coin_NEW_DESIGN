@@ -25,15 +25,16 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class Cheating_Activity extends AppCompatActivity {
 
     private static final String COIN_SIDE = "coin side";
 
     private ImageView coinImage;
     private Button headsButton;
     private Button tailsButton;
-    private Random r;
-    private int coinSide;
+    private boolean clicked = false;
+    //private Random r;
+    //private int coinSide;
     private MediaPlayer mp;
     private int curSide = R.drawable.heads;
 
@@ -48,18 +49,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        r = new Random();
+        //r = new Random();
         coinImage = (ImageView) findViewById(R.id.coin);
         headsButton = (Button) findViewById(R.id.heads);
         tailsButton = (Button) findViewById(R.id.tails);
 
         // Restore all values and images after rotate
 
-        //if (savedInstanceState != null) {
+        if (savedInstanceState != null) {
 
-           // coinImage.setImageResource(Integer.parseInt(savedInstanceState.getCharSequence(COIN_SIDE).toString()));
+            coinImage.setImageResource(Integer.parseInt(savedInstanceState.getCharSequence(COIN_SIDE).toString()));
 
-        //}
+        }
 
     }
     public void showAlertDialogQuit(MenuItem menuItem){
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 finishAffinity();
+
             }
         });
 
@@ -103,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-      getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.cheating_mode_menu, menu);
 
-      return true;
+        return true;
     }
 
     @Override
@@ -120,23 +122,26 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId()==R.id.settings) {
             Toast.makeText(this, "You clicked SETTINGS", Toast.LENGTH_SHORT).show();
         }
-        else if(item.getItemId()== R.id.help){
+        else if(item.getItemId()== R.id.help) {
             Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
+
         }
 
-        else if(item.getItemId() == R.id.cheat){
-            Intent myintent = new Intent(MainActivity.this, Cheating_Activity.class);
+        else if(item.getItemId() == R.id.regular){
+            Intent myintent = new Intent(Cheating_Activity.this, MainActivity.class);
             this.startActivity(myintent);
 
             return false;
 
 
-        }
+            }
+
         else {
             return super.onOptionsItemSelected(item);
         }
         return true;
     }
+
 
 
     private void setButtonsEnabled(boolean enabled) {
@@ -176,54 +181,64 @@ public class MainActivity extends AppCompatActivity {
     public void flipCoin(View v) {
 
 
-        final int buttonId = ((Button) v).getId();
-        coinSide = r.nextInt(2);
+        //final int buttonId = ((Button) v).getId();
+
+
 
 
         stopPlaying();
         mp = MediaPlayer.create(this, R.raw.coin_flip);
         mp.start();
 
-        if (coinSide == 0) {  //Tails
+        switch (v.getId()) {
 
-            boolean stayTheSame = (curSide == R.drawable.cointail);
-            long timeOfAnimation = animateCoin(stayTheSame);
-            curSide = R.drawable.cointail;
+            case R.id.heads: {
 
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+                boolean stayTheSame = (curSide == R.drawable.coinhead);
+                long timeOfAnimation = animateCoin(stayTheSame);
+                curSide = R.drawable.coinhead;
 
-
-                    setButtonsEnabled(true);
-
-                }
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
 
-            }, timeOfAnimation + 150);
+                        setButtonsEnabled(true);
+
+                    }
+
+                }, timeOfAnimation + 150);
+
+                break;
+            }
+            case R.id.tails: {
+
+                boolean stayTheSame = (curSide == R.drawable.cointail);
+                long timeOfAnimation = animateCoin(stayTheSame);
+                curSide = R.drawable.cointail;
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
 
-        } else {  //Head
+                        setButtonsEnabled(true);
 
-            boolean stayTheSame = (curSide == R.drawable.coinhead);
-            long timeOfAnimation = animateCoin(stayTheSame);
-            curSide = R.drawable.coinhead;
-
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+                    }
 
 
+                }, timeOfAnimation + 150);
 
-                    setButtonsEnabled(true);
+                break;
 
-                }
-
-            }, timeOfAnimation + 150);
-
+            }
         }
+
+
+
+
 
     }
 
@@ -235,3 +250,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
+
+
+
+
+
