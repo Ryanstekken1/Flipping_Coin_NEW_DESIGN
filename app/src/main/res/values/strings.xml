@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">CoinTossFinal</string>
-    <string name="highScore">Highscore:\u0020</string>
-    <string name="score">Score:\u0020</string>
+    <string name="app_name">The Flipping Coin</string>
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
     <string name="heads_first_letter">H</string>
     <string name="tails_first_letter">T</string>
     <string name="splash_screen_image"> ssi </string>
     <string name="splash_screen_text"> sst </string>
+    <string name="settings">Settings</string>
+    <string name="help">Help</string>
 </resources>

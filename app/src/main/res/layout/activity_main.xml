@@ -5,49 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/white"
 
-    <!-- android:background="@drawable/background"-->
+    >
 
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/heads"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:onClick="flipCoin" />
+
+        <Button
+            android:id="@+id/tails"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:onClick="flipCoin" />
+        <!-- android:text="@string/tails" -->
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/coin"
-        android:layout_width="152dp"
-        android:layout_height="129dp"
+        android:layout_width="138dp"
+        android:layout_height="128dp"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/heads"
         android:src="@drawable/coinhead" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center">
 
-        <Button
-            android:id="@+id/heads"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
 
-            android:layout_margin="16dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:onClick="flipCoin"
-
-            android:text="@string/heads" />
-
-        <Button
-            android:id="@+id/tails"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:onClick="flipCoin"
-            android:text="@string/tails" />
-
-    </LinearLayout>
 
 </RelativeLayout>

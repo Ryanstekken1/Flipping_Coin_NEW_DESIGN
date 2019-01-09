@@ -6,12 +6,16 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Menu;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -33,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //Dieser Aufruf führt dazu, dass die Titelleiste (Akku, Zeit, usw.) ausgeblendet wird.
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -51,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+      getMenuInflater().inflate(R.menu.main_menu, menu);
+
+      return true;
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -58,6 +74,21 @@ public class MainActivity extends AppCompatActivity {
         outState.putCharSequence(COIN_SIDE, String.valueOf(curSide));
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.settings) {
+            Toast.makeText(this, "You clicked SETTINGS", Toast.LENGTH_SHORT).show();
+        }
+        else if(item.getItemId()== R.id.help){
+            Toast.makeText(this, "Es handelt sich hierbei um einen getürkten Münzwurf Modus. Für Kopf einen beliebeigen Bereich, Links anklicken, für Zahl einen beliebigen Bereicht rechts anklicken.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
     private void setButtonsEnabled(boolean enabled) {
         headsButton.setEnabled(enabled);
         tailsButton.setEnabled(enabled);
@@ -97,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
         final int buttonId = ((Button) v).getId();
         coinSide = r.nextInt(2);
+
 
         stopPlaying();
         mp = MediaPlayer.create(this, R.raw.coin_flip);
