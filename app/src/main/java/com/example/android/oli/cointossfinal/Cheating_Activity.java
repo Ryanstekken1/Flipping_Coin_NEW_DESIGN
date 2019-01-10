@@ -87,7 +87,7 @@ public class Cheating_Activity extends AppCompatActivity {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Hilfe / Anleitung SPECIAL MODE");
-        alert.setMessage("Im Special Mode wird eine Münze geworfen und das Ergebnis im Vorfeld bestimmt. Berührt man eine beliebige Stelle auf der rechten Bildschirmseite, so erhält man Zahl. Berührt man hingegen die Linke Bildschirmhälfte, so erhält man Kopf.");
+        alert.setMessage("Im Special Mode wird eine Münze geworfen und das Ergebnis im Vorfeld bestimmt. Berührt man eine beliebige Stelle auf der rechten Bildschirmseite, so erhält man Zahl. Berührt man hingegen die linke Bildschirmhälfte, so erhält man Kopf.");
         alert.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
