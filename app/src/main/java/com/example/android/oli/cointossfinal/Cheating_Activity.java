@@ -33,8 +33,6 @@ public class Cheating_Activity extends AppCompatActivity {
     private Button headsButton;
     private Button tailsButton;
     private boolean clicked = false;
-    //private Random r;
-    //private int coinSide;
     private MediaPlayer mp;
     private int curSide = R.drawable.heads;
 
@@ -47,14 +45,11 @@ public class Cheating_Activity extends AppCompatActivity {
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_cheating_);
 
-        //r = new Random();
         coinImage = (ImageView) findViewById(R.id.coin);
         headsButton = (Button) findViewById(R.id.heads);
         tailsButton = (Button) findViewById(R.id.tails);
-
-        // Restore all values and images after rotate
 
         if (savedInstanceState != null) {
 
@@ -91,8 +86,8 @@ public class Cheating_Activity extends AppCompatActivity {
     public void showAlertDialogHelp(MenuItem menuItem){
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Hilfe / Anleitung");
-        alert.setMessage("Linken Bildschirmbereich berühren für Kopf. Rechten Bildschirmbereich berühren für Zahl.");
+        alert.setTitle("Hilfe / Anleitung SPECIAL MODE");
+        alert.setMessage("Im Special Mode wird eine Münze geworfen und das Ergebnis im Vorfeld bestimmt. Berührt man eine beliebige Stelle auf der rechten Bildschirmseite, so erhält man Zahl. Berührt man hingegen die Linke Bildschirmhälfte, so erhält man Kopf.");
         alert.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -102,7 +97,6 @@ public class Cheating_Activity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.cheating_mode_menu, menu);
@@ -110,44 +104,41 @@ public class Cheating_Activity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putCharSequence(COIN_SIDE, String.valueOf(curSide));
-
-    }
+    //@Override
+    //protected void onSaveInstanceState(Bundle outState) {
+      //  super.onSaveInstanceState(outState);
+        //outState.putCharSequence(COIN_SIDE, String.valueOf(curSide));
+    //}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.settings) {
-            Toast.makeText(this, "You clicked SETTINGS", Toast.LENGTH_SHORT).show();
-        }
-        else if(item.getItemId()== R.id.help) {
-            Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
 
-        }
 
-        else if(item.getItemId() == R.id.regular){
+
+        if(item.getItemId() == R.id.regular){
             Intent myintent = new Intent(Cheating_Activity.this, MainActivity.class);
             this.startActivity(myintent);
 
             return false;
-
 
             }
 
         else {
             return super.onOptionsItemSelected(item);
         }
-        return true;
     }
-
-
 
     private void setButtonsEnabled(boolean enabled) {
         headsButton.setEnabled(enabled);
         tailsButton.setEnabled(enabled);
     }
+
+    // Definition der eigentlichen Animation eines Münzwurfs. Hierbei lässt die Methode eine gegebene Grafik
+    // um die X und/oder Y - Achse rotieren, während die Grafik zeitgleich optisch vergrößtert wird,
+    // was dem effekt einer, in die höhe geworfenen Münze sehr nahe kommt.
+    // Hierzu wird auf die Klasse "Rotated3dAnimation zurückgegriffen.
+    // Die individuellen Parameter kann man mit hilfe von "Rotate3dAnimation(coinImage, R.drawable.coinhead, R.drawable.cointail, 0, 180, 0, 0, 0, 0)"
+    // definieren.
 
     private long animateCoin(boolean stayTheSame) {
 
@@ -160,9 +151,9 @@ public class Cheating_Activity extends AppCompatActivity {
             animation = new Rotate3dAnimation(coinImage, R.drawable.cointail, R.drawable.coinhead, 0, 180, 0, 0, 0, 0);
         }
         if (stayTheSame) {
-            animation.setRepeatCount(9); // must be odd (5+1 = 6 flips so the side will stay the same)
+            animation.setRepeatCount(9); // (5+1 = 6 Rotationen, dann bleibt die Seite gleich)
         } else {
-            animation.setRepeatCount(10); // must be even (6+1 = 7 flips so the side will not stay the same)
+            animation.setRepeatCount(10); // (6+1 = 7 Rotationen, dann bleibt die Seite nicht gleich)
         }
 
         animation.setDuration(150);
@@ -178,18 +169,17 @@ public class Cheating_Activity extends AppCompatActivity {
         return animation.getDuration() * (animation.getRepeatCount() + 1);
     }
 
+    // Definition der Methode flipCoin. Führt die Mainmethode das "Flippen" aus.
+
     public void flipCoin(View v) {
-
-
-        //final int buttonId = ((Button) v).getId();
-
-
-
 
         stopPlaying();
         mp = MediaPlayer.create(this, R.raw.coin_flip);
         mp.start();
 
+        // Hier wird das "Switch Statement" verwendet um herauszufinden, welcher Button (Kopf,Zahl) gedrückt wurde um anhand des gedrückten Buttons
+        // das korrekte Ergebnis zu bekommen. Links ist Kopf. Rechts ist Zahl. Hier handelt es sich um die "essentielle" VEränderung der Activity
+        // im vergleich zur Main Activity (Regular Mode)
         switch (v.getId()) {
 
             case R.id.heads: {
@@ -241,7 +231,7 @@ public class Cheating_Activity extends AppCompatActivity {
 
 
     }
-
+// Aufruf der Methode "stopPlayin" = Stoppt den Ton des Coin Toss
     private void stopPlaying() {
         if (mp != null) {
             mp.stop();

@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView coinImage;
     private Button headsButton;
-    private Button tailsButton;
     private Random r;
     private int coinSide;
     private MediaPlayer mp;
@@ -51,17 +50,14 @@ public class MainActivity extends AppCompatActivity {
         r = new Random();
         coinImage = (ImageView) findViewById(R.id.coin);
         headsButton = (Button) findViewById(R.id.heads);
-        tailsButton = (Button) findViewById(R.id.tails);
 
-        // Restore all values and images after rotate
+        if (savedInstanceState != null) {
 
-        //if (savedInstanceState != null) {
+            coinImage.setImageResource(Integer.parseInt(savedInstanceState.getCharSequence(COIN_SIDE).toString()));
 
-           // coinImage.setImageResource(Integer.parseInt(savedInstanceState.getCharSequence(COIN_SIDE).toString()));
+        }
 
-        //}
-
-    }
+         }
     public void showAlertDialogQuit(MenuItem menuItem){
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -89,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
     public void showAlertDialogHelp(MenuItem menuItem){
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Hilfe / Anleitung");
-        alert.setMessage("Linken Bildschirmbereich berühren für Kopf. Rechten Bildschirmbereich berühren für Zahl.");
+        alert.setTitle("Hilfe / Anleitung REGULAR MODE");
+        alert.setMessage("Im Regular Mode wird eine Münze ganz fair geworfen. Die Wahrscheinlichkeit für Kopf oder Zahl liegen bei 50/50.");
         alert.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -99,8 +95,6 @@ public class MainActivity extends AppCompatActivity {
         alert.create().show();
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
       getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -108,42 +102,43 @@ public class MainActivity extends AppCompatActivity {
       return true;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putCharSequence(COIN_SIDE, String.valueOf(curSide));
+    // Link für die Beschreibung von onSaveInstance Methode/Funktion
+    // https://inthecheesefactory.com/blog/fragment-state-saving-best-practices/en
 
-    }
+    //@Override
+    //protected void onSaveInstanceState(Bundle outState) {
+      //  super.onSaveInstanceState(outState);
+        //outState.putCharSequence(COIN_SIDE, String.valueOf(curSide));
+
+    //}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.settings) {
-            Toast.makeText(this, "You clicked SETTINGS", Toast.LENGTH_SHORT).show();
-        }
-        else if(item.getItemId()== R.id.help){
-            Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
-        }
 
-        else if(item.getItemId() == R.id.cheat){
+        if(item.getItemId() == R.id.cheat){
             Intent myintent = new Intent(MainActivity.this, Cheating_Activity.class);
             this.startActivity(myintent);
 
             return false;
 
-
         }
         else {
             return super.onOptionsItemSelected(item);
         }
-        return true;
-    }
 
+    }
 
     private void setButtonsEnabled(boolean enabled) {
         headsButton.setEnabled(enabled);
-        tailsButton.setEnabled(enabled);
+
     }
 
+    // Definition der eigentlichen Animation eines Münzwurfs. Hierbei lässt die Methode eine gegebene Grafik
+    // um die X und/oder Y - Achse rotieren, während die Grafik zeitgleich optisch vergrößtert wird,
+    // was dem effekt einer, in die höhe geworfenen Münze sehr nahe kommt.
+    // Hierzu wird auf die Klasse "Rotated3dAnimation zurückgegriffen.
+    // Die individuellen Parameter kann man mit hilfe von "Rotate3dAnimation(coinImage, R.drawable.coinhead, R.drawable.cointail, 0, 180, 0, 0, 0, 0)"
+    // definieren.
     private long animateCoin(boolean stayTheSame) {
 
         Rotate3dAnimation animation;
@@ -173,6 +168,9 @@ public class MainActivity extends AppCompatActivity {
         return animation.getDuration() * (animation.getRepeatCount() + 1);
     }
 
+    // Die Kernmethode der Activity. Zunäcsht wird mit Hilfe von "coinSide = r.nextInt(2);" ein zufällige Zahl zwsichen 0 und 1 bestimmt. Ist das Ergebnis 0 dann wird Kopf als Ergebnis angezeigt.
+    // Alles andere ist Zahl.
+
     public void flipCoin(View v) {
 
 
@@ -184,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         mp = MediaPlayer.create(this, R.raw.coin_flip);
         mp.start();
 
-        if (coinSide == 0) {  //Tails
+        if (coinSide == 0) {  //Zahl
 
             boolean stayTheSame = (curSide == R.drawable.cointail);
             long timeOfAnimation = animateCoin(stayTheSame);
@@ -204,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             }, timeOfAnimation + 150);
 
 
-        } else {  //Head
+        } else {  //Kopf
 
             boolean stayTheSame = (curSide == R.drawable.coinhead);
             long timeOfAnimation = animateCoin(stayTheSame);
