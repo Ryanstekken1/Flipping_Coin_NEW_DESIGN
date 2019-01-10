@@ -8,10 +8,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/cointoss"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
+
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:configChanges="orientation|screenSize"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" android:launchMode="singleTask" />
-        <activity android:name=".Cheating_Activity" android:label="Special Mode" android:launchMode="singleTask" ></activity>
+        <activity android:name=".MainActivity" android:launchMode="singleTask" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Cheating_Activity" android:label="Special Mode" android:launchMode="singleTask" android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>
